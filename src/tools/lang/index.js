@@ -1,6 +1,5 @@
-import Vue from 'vue'
-import VueI18n from 'vue-i18n'
-import { getCookie } from "@/util";
+import {createI18n} from 'vue-i18n'
+import { getCookie } from "@/utils";
 // 引入自定义中文包
 import customCN from './locale/cn.json'
 // 引入自定义英文包
@@ -8,9 +7,6 @@ import customEN from './locale/en.json'
 import customID from './locale/id.json'
 import customTH from './locale/th.json'
 import customVI from './locale/vi.json'
-
-
-Vue.use(VueI18n)
 
 const langKey = {
   // https://gist.github.com/wpsmith/7604842
@@ -107,9 +103,8 @@ const locale =
     langKey[window.navigator.userLanguage] ||
     langKey[window.navigator.language] ||
     langKey['en']
-
 // 通过选项创建 VueI18n 实例
-const i18n = new VueI18n({
+const i18n = createI18n({
   locale,
   messages, // 设置地区信息
   silentTranslationWarn: true,
