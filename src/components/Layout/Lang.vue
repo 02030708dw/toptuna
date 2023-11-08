@@ -55,7 +55,7 @@ export default defineComponent({
     })
     const loadLanguage = () => {
       const getLanguage = localStorage.getItem("selectedLanguage");
-      if (selectedLanguage) {
+      if (getLanguage) {
         selectedLanguage.value = getLanguage;
         locale.value = getLanguage;
       }
