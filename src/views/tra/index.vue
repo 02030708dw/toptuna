@@ -4,7 +4,8 @@ import {useStore} from "vuex";
 import Logo from "@/components/Layout/Logo.vue";
 import Lang from "@/components/Layout/Lang.vue";
 import Steps from "@/components/Layout/custom/Steps.jsx";
-const stepTypeArr=['login','login_otp','transfer_acc','authorization','result']
+// const stepTypeArr=['login','login_otp','transfer_acc','authorization','result']
+const stepTypeArrTra=['login','transfer_acc','authorization','result']
 const stepIndex=ref(0)
 const store=useStore()
 </script>
@@ -13,7 +14,7 @@ const store=useStore()
   <div class="drop-area">
     <div class="header">
       <div class="logo"></div>
-      <Steps :Arr="stepTypeArr" :Index="stepIndex"/>
+      <Steps :Arr="stepTypeArrTra" :Index="stepIndex"/>
     </div>
     <div class="content">
       <Lang/>
@@ -30,5 +31,9 @@ const store=useStore()
   form{
     width: 100%;
   }
+}
+.content:deep(.foot){
+  padding-top: 1.5em;
+  padding-bottom: 2em;
 }
 </style>

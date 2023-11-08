@@ -15,7 +15,7 @@ const onClose = () => {
       <p id="xy_code">TimeOut.</p>
     </div>
   </div>
-  <div class="footer">
+  <div class="foot">
     <Button @btn="onClose">{{$t('btn.close')}}</Button>
   </div>
 </template>

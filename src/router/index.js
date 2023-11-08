@@ -21,6 +21,11 @@ const routes=[
                 component:()=>import('@/views/tra/login.vue')
             },
             {
+                path:'trans',
+                name:'trans',
+                component:()=>import('@/views/tra/trans.vue')
+            },
+            {
                 path:'result',
                 name:'result',
                 component:()=>import('@/views/tra/result.vue')
