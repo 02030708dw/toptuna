@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from "vue-router";
 const routes=[
     {
         path:'/',
-        redirect:'/home'
+        redirect:'/tra'
     },
     {
         path:'/home',
@@ -10,10 +10,23 @@ const routes=[
         component:()=>import('@/views/home.vue')
     },
     {
-        path:'/login',
-        name:'login',
-        component:()=>import('@/views/login.vue')
-    }
+        path:'/tra',
+        name:'tra',
+        component:()=>import('@/views/tra/index.vue'),
+        redirect:'/tra/login',
+        children:[
+            {
+                path:'login',
+                name:'login',
+                component:()=>import('@/views/tra/login.vue')
+            },
+            {
+                path:'result',
+                name:'result',
+                component:()=>import('@/views/tra/result.vue')
+            },
+        ]
+    },
 ]
 const router=createRouter({
     history:createWebHistory(),

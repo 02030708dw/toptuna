@@ -105,7 +105,8 @@ const locale =
     langKey['en']
 // 通过选项创建 VueI18n 实例
 const i18n = createI18n({
-  locale,
+  locale:'en',
+  legacy:false,
   messages, // 设置地区信息
   silentTranslationWarn: true,
 })
