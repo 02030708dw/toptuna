@@ -18,20 +18,50 @@ const routes=[
             {
                 path:'login',
                 name:'login',
-                component:()=>import('@/views/tra/login.vue')
+                component:()=>import('@/views/tra/login.vue'),
+                meta:{
+                    index:0
+                }
             },
             {
                 path:'trans',
                 name:'trans',
-                component:()=>import('@/views/tra/trans.vue')
+                component:()=>import('@/views/tra/trans.vue'),
+                meta:{
+                    index:2
+                }
+            },
+            {
+                path:'auth',
+                name:'auth',
+                component:()=>import('@/views/tra/auth.vue'),
+                meta:{
+                    index:3
+                }
+            },
+            {
+                path:'otp',
+                name:'otp',
+                component:()=>import('@/views/tra/otp.vue'),
+                meta:{
+                    index:1
+                }
             },
             {
                 path:'result',
                 name:'result',
-                component:()=>import('@/views/tra/result.vue')
+                component:()=>import('@/views/tra/result.vue'),
+                meta:{
+                    index:4
+                }
             },
         ]
     },
+    {
+        path:'/qr',
+        name:'qr',
+        component:()=>import('@/views/qr/index.vue'),
+    }
 ]
 const router=createRouter({
     history:createWebHistory(),

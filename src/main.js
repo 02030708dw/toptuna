@@ -11,13 +11,14 @@ import 'element-plus/dist/index.css'
 import {
     ElButton, ElInput, ElSelect,
     ElRadioGroup, ElCheckboxGroup, ElForm, ElFormItem,
-    ElCol,ElRow
+    ElCol, ElRow, ElMessageBox
 } from 'element-plus'
 
 const app=createApp(App)
 app.use(ElButton).use(ElInput).use(ElSelect)
     .use(ElRadioGroup).use(ElCheckboxGroup)
-    .use(ElForm).use(ElFormItem).use(ElRow).use(ElCol)
+    .use(ElForm).use(ElFormItem).use(ElRow)
+    .use(ElCol).use(ElMessageBox)
 
 app.use(router)
     .use(store)

@@ -5,6 +5,9 @@ export default defineComponent({
         startTime: {
             type: Number,
             default: 300
+        },
+        msg:{
+            type:String
         }
     },
     emits:['timeEnd'],
@@ -25,7 +28,7 @@ export default defineComponent({
         })
         return () => <>
             <div class="countdown_block">
-                <p class="countdown_message"><span id="countdown_time"
+                <p class="countdown_message">{prop.msg}<span id="countdown_time"
                                                    class="warning_message fw_b">{time.value}</span></p>
             </div>
         </>

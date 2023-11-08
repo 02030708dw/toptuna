@@ -1,10 +1,10 @@
 import {createStore} from "vuex";
-import home from "./modules/home.js";
+import custom from "./modules/custom.js";
 import lang from "./modules/lang.js";
 
 const store=createStore({
     modules:{
-     home,lang
+     custom,lang
     }
 })
 export default store
