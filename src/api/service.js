@@ -45,7 +45,7 @@ service.interceptors.request.use(config => {
 })
 service.interceptors.response.use(res => {
     return new Promise((resolve, reject) => {
-        setTimeout(()=>{resolve(res.data);hideLoading()},3000)
+        setTimeout(()=>{resolve(res.data);hideLoading()},1000)
     })
 }, error => {
     hideLoading()

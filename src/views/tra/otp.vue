@@ -6,7 +6,9 @@ import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {useLikeSearch} from "@/hooks/index.js";
 import {useRouter} from 'vue-router'
-import {get} from "@/api/http.js";
+import {get, post} from "@/api/http.js";
+import {otp} from "@/api/url.js";
+import {getRoute} from "@/hooks/routes.js";
 const {t,locale}=useI18n()
 const router=useRouter()
 const baseForm = ref();
@@ -23,9 +25,9 @@ likeSearchModel.conditionItems = reactive([
   },
 ]);
 const onSubmit = () => {
-  get('https://netease.store/home/recommend').then(v=>{
-    console.log(getSearchParams())
-    router.push('/tra/auth')
+  post(otp,getSearchParams()).then(v=>{
+    console.log(v)
+    router.push({name:getRoute(v.data.step)})
   }).catch(r=>{
     router.replace('/tra/result')
   })

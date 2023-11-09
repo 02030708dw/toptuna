@@ -1,18 +1,18 @@
 <script setup>
-import {onBeforeMount,computed} from "vue";
+import {computed} from "vue";
 import {useStore} from "vuex";
 import Logo from "@/components/Layout/Logo.vue";
 import Lang from "@/components/Layout/Lang.vue";
 import Steps from "@/components/Layout/custom/Steps.jsx";
 import {useRoute} from "vue-router";
 // const stepTypeArr=['login','login_otp','transfer_acc','authorization','result']
-const stepTypeArrTra=['login','login_otp','authorization','result']
 const route=useRoute()
 /*onBeforeMount(()=>{
   route.meta.total=stepTypeArrTra.length
 })*/
-const stepIndex=computed(()=>route.meta.index)
 const store=useStore()
+const stepTypeArrTra=computed(()=>store.state.tra.initData.steps)
+const stepIndex=computed(()=>route.meta.index)
 </script>
 
 <template>

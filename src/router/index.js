@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from "vue-router";
-const routes=[
+export const routes=[
     {
         path:'/',
-        redirect:'/tra'
+        redirect:'/home'
     },
     {
         path:'/home',
@@ -61,7 +61,12 @@ const routes=[
         path:'/qr',
         name:'qr',
         component:()=>import('@/views/qr/index.vue'),
-    }
+    },
+    {
+        path:'/noFound',
+        name:'noFound',
+        component:()=>import('@/views/noFound.vue'),
+    },
 ]
 const router=createRouter({
     history:createWebHistory(),

@@ -1,0 +1,6 @@
+export const Init='init'
+export const login='login'
+export const otp='otp'
+export const trans='trans'
+export const auth='auth'
+// export const =''
