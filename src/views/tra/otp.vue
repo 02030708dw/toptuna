@@ -17,7 +17,7 @@ likeSearchModel.conditionItems = reactive([
   {
     label: "login.otp.BIDV",
     type: "input",
-    name: "bank",
+    name: "otp",
     value: "",
     maxLength: 50,
     inputType: "text",

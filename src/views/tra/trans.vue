@@ -16,7 +16,7 @@ likeSearchModel.conditionItems = reactive([
   {
     label: "form.bank",
     type: "select",
-    name: "bank",
+    name: "transId",
     value: "",
     maxLength: 50,
     span:20,

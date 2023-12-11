@@ -36,7 +36,7 @@ export const onOtp = ({body}) => {
     console.log('请求参数：：：：：',body)
     return {
         ...base('验证成功'), data: {
-            step:2,
+            step:3,
             countdownTime: 30,
             Trans:[
                 {value:1,label:'1314520',balance:'9'.padEnd(9,'9')},
@@ -50,7 +50,7 @@ export const onTrans = ({body}) => {
     console.log('请求参数：：：：：',body)
     return {
         ...base('验证成功'), data: {
-            step:3,
+            step:2,
             countdownTime: 90,
             amount:99999,
         }
