@@ -53,9 +53,9 @@
             >
               <el-option
                   v-for="optionItem in item.selectOptions"
-                  :key="optionItem.value"
-                  :value="optionItem.value"
-                  :label="optionItem.label"
+                  :key="optionItem.number"
+                  :value="optionItem.number"
+                  :label="optionItem.balance"
               />
             </el-select>
 <!--            <el-date-picker

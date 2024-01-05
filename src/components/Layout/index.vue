@@ -9,15 +9,21 @@ import {useI18n} from "vue-i18n";
 import {ElMessage} from "element-plus";
 import Button from "@/components/Layout/common/Button.jsx";
 import Alarm from "@/components/Layout/common/Alarm.jsx";
-const stepTypeArr=['login','login_otp','transfer_acc','authorization','result']
+import useMapState from "@/hooks/store/useMapState.js";
+const store=useStore()
+// const stepTypeArr=['login','login_otp','transfer_acc','authorization','result']
+const sData=useMapState({
+  stepTypeArr:s=>s.initData.steps,
+  currency:s=>s.currency,
+  amount:s=>s.amount
+})
 const stepIndex=ref(0)
 const {getSearchParams, likeSearchModel} = useLikeSearch();
-const priceProps=reactive({
+/*const priceProps=reactive({
   currency:'VND',
   amount: "99999",
-})
+})*/
 const baseForm = ref();
-const store=useStore()
 const {t,locale}=useI18n()
 likeSearchModel.conditionItems = reactive([
   {
@@ -70,7 +76,7 @@ const formConfig={
   <div class="drop-area">
   <div class="header">
     <div class="logo"></div>
-    <Steps :Arr="stepTypeArr" :Index="stepIndex"/>
+    <Steps :Arr="sData.stepTypeArr" :Index="stepIndex"/>
   </div>
     <div class="content">
       <Lang/>
@@ -80,7 +86,7 @@ const formConfig={
         <div class="item deposit">
           <div class="item_tit">{{ $t("login.deposit") }}</div>
           <div class="item_txt">
-            {{ priceProps.currency }}<span class="num">{{ priceProps.amount }}</span>
+            {{ sData.currency }}<span class="num">{{ sData.amount }}</span>
           </div>
         </div>
         <BaseForm

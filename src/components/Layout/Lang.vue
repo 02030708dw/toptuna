@@ -1,9 +1,9 @@
 <script>
-import {defineComponent,ref,onBeforeMount,watch} from 'vue'
+import {defineComponent,ref,onBeforeMount,watch,watchEffect,toRefs,toRaw} from 'vue'
 import {useI18n} from "vue-i18n";
 import {useStore} from "vuex";
-
 export default defineComponent({
+  props:['langs','lang'],
  /* data() {
     return {
       selectedLanguage: "en", // 默认选中的语言
@@ -32,18 +32,25 @@ export default defineComponent({
       }
     },
   },*/
-  setup() {
+  setup(props) {
     const {locale} = useI18n()
     const isUlActive=ref(false)
     const store=useStore()
-    const languages={
+    const languages=ref({
       en: "English",
       vi: "Tiếng Việt",
       th: "อักษรไทย",
       id: "Indonesia",
       cn: "中文",
-    }
+    })
     const selectedLanguage=ref("en")
+    watchEffect(()=>{
+      selectedLanguage.value=props.lang
+      const langs=props.langs
+      const d=Object.keys(languages.value).filter(it=>langs.includes(it)).map(it=>({[it]:languages.value[it]}))
+      // languages.value={...d}
+      // console.log(languages.value)
+    })
     const changeLanguage = (lang) => {
       selectedLanguage.value = lang; // 更新选中的语言
       locale.value = lang; // 切换语言

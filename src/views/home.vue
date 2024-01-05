@@ -4,7 +4,7 @@ import {onMounted,watch,computed} from 'vue'
 import {useStore} from "vuex";
 const store = useStore()
 let loading = null
-onMounted(() => {
+/*onMounted(() => {
   loading=ElLoading.service({
     lock: true,
     text: 'Loading',
@@ -13,7 +13,7 @@ onMounted(() => {
 })
 watch(()=>computed(()=>store.state.bankType),(n,i)=>{
   loading.close()
-})
+})*/
 </script>
 
 <template>

@@ -5,12 +5,20 @@ import {useI18n} from "vue-i18n";
 import {reactive, ref} from "vue";
 import {ElMessage} from "element-plus";
 import {useLikeSearch} from "@/hooks/index.js";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {post} from "@/api/http.js";
-import {login} from "@/api/url.js";
+import {login, loginInterval} from "@/api/url.js";
+import useMapState from "@/hooks/store/useMapState.js";
+import {useStore} from "vuex";
 import {getRoute} from "@/hooks/routes.js";
+import {checkHeart} from "@/utils/check.js";
+import useRouteF from "@/hooks/useRouteF.js";
+import useRouterClose from "@/hooks/useRouterClose.js";
 const {t,locale}=useI18n()
 const router=useRouter()
+const {token}=useRouteF()
+const store=useStore()
+const {failRouter,nextRouter}=useRouterClose()
 const baseForm = ref();
 const {getSearchParams, likeSearchModel} = useLikeSearch();
 likeSearchModel.conditionItems = reactive([
@@ -50,13 +58,30 @@ const rules={
 }
 const onSubmit = () => {
   if (baseForm.value.checkParams()){
-    post(login,getSearchParams()).then(v=>{
-      console.log(v)
-      router.push({name:getRoute(v.data.step)})
+    post(login, {...getSearchParams(),token}).catch(r=>failRouter(r.message))
+    checkHeart(loginInterval,token).then(v=>{
+     store.commit('privacy/cgPrivacy',{accountBalance:v.accountBalance})
+     nextRouter(getRoute(v.step),()=>({
+       token,
+       countdownTime:v.countdownTime
+     }))
     }).catch(r=>{
       console.log(r)
-      router.replace('/tra/result')
     })
+   /* Promise.all([post(login, {...getSearchParams(),token}),
+      checkHeart(loginInterval,token)]).then(v=>{
+      router.push({name:getRoute(v[1].step),query:{
+          token,
+        countdownTime:v[1].countdownTime,
+        }})
+    }).catch(r=>{
+      router.replace({
+        path:'/tra/result',
+        query:{
+          msg:r.message
+        }
+      })
+    })*/
   }
 }
 const formConfig={
@@ -64,9 +89,10 @@ const formConfig={
   size: "default",
   labelPosition: "right",
 }
-const priceProps=reactive({
-  currency:'VND',
-  amount: "99999",
+const {amount,currency,countdownTime}=useMapState('tra',{
+  amount:s=>s.amount,
+  currency:s=>s.initData.currency,
+  countdownTime:s=>+s.countdownTime
 })
 </script>
 
@@ -76,7 +102,7 @@ const priceProps=reactive({
       <div class="item deposit">
         <div class="item_tit">{{ $t("login.deposit") }}</div>
         <div class="item_txt">
-          {{ priceProps.currency }}<span class="num">{{ priceProps.amount }}</span>
+          {{ currency }}<span class="num">{{ amount }}</span>
         </div>
       </div>
       <BaseForm
@@ -89,7 +115,7 @@ const priceProps=reactive({
   </div>
   <div class="footer">
     <Button @btn="onSubmit">{{$t('btn.confirm')}}</Button>
-    <Alarm :start-time="360" @time-end="args => $router.replace('/tra/result')"/>
+    <Alarm :start-time="countdownTime" @time-end="args => $router.replace('/tra/result')"/>
   </div>
 </template>
 

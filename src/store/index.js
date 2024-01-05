@@ -4,6 +4,7 @@ import lang from "./modules/lang.js";
 import type from "@/store/modules/type.js";
 import tra from "@/store/modules/tra.js";
 import qr from "@/store/modules/qr.js";
+import privacy from "@/store/modules/private.js";
 
 const store=createStore({
     actions:{
@@ -18,7 +19,7 @@ const store=createStore({
         }
     },
     modules:{
-     custom,lang,type,tra,qr
+     custom,lang,type,tra,qr,privacy
     }
 })
 export default store

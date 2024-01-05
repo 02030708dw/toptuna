@@ -1,7 +1,22 @@
-import request from './service.js'
-export const get=(url)=>{
-    return request.get(url)
+import {http} from './service.js'
+export const get=(url,data)=>{
+    return http({
+        url,
+        data,
+    })
 }
 export const post=(url,data)=>{
-    return request.post(url, {...data})
+    return http({
+        url,
+        data,
+        method:'POST'
+    })
+}
+export const postH=(url,data)=>{
+    return http({
+        url,
+        data,
+        time:3000,
+        method:'POST'
+    })
 }

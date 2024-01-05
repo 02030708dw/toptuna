@@ -7,8 +7,9 @@ import App from './App.vue'
 import store from "@/store";
 import router from "@/router/guard.js";
 import i18n from "@/tools/lang";
-import '@/mock'
+// import '@/mock'
 import {registerElement} from "@/plugins.js";
+import 'element-plus/dist/index.css'
 const app=createApp(App)
 registerElement(app)
 app.use(router)

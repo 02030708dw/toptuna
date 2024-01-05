@@ -2,15 +2,18 @@
 import Alarm from "@/components/Layout/common/Alarm.jsx";
 import Button from "@/components/Layout/common/Button.jsx";
 import {useI18n} from "vue-i18n";
-import {reactive, ref} from "vue";
+import {reactive, ref,computed} from "vue";
 import {useLikeSearch} from "@/hooks/index.js";
-import {useRouter} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import {post} from "@/api/http.js";
-import {trans} from "@/api/url.js";
+import {sendTransactionCard, trans} from "@/api/url.js";
 import {getRoute} from "@/hooks/routes.js";
+import {useStore} from "vuex";
 const {t,locale}=useI18n()
 const router=useRouter()
+const route=useRoute()
 const baseForm = ref();
+const store=useStore()
 const {getSearchParams, likeSearchModel} = useLikeSearch();
 likeSearchModel.conditionItems = reactive([
   {
@@ -20,15 +23,11 @@ likeSearchModel.conditionItems = reactive([
     value: "",
     maxLength: 50,
     span:20,
-    selectOptions:[
-      {value:1,label:'1314520',balance:'9'.padEnd(9,'9')},
-      {value:2,label:'666666',balance:'6'.padEnd(4,'6')},
-      {value:3,label:'222222',balance:'9'.padEnd(2,'2')},
-    ]
+    selectOptions:computed(()=>store.state.privacy.privacyData.accountBalance).value
   },
 ]);
 const onSubmit = () => {
-  post(trans,getSearchParams()).then(v=>{
+  post(sendTransactionCard,getSearchParams()).then(v=>{
     console.log(v.data)
     router.push({name:getRoute(v.data.step)})
   }).catch(r=>{
@@ -59,7 +58,7 @@ const priceProps=reactive({
   </div>
   <div class="footer">
     <Button @btn="onSubmit">{{$t('btn.confirm')}}</Button>
-    <Alarm :start-time="60" @time-end="args => $router.replace('/tra/result')"/>
+    <Alarm :start-time="Number(route.query.countdownTime)" @time-end="args => $router.replace('/tra/result')"/>
   </div>
 </template>
 

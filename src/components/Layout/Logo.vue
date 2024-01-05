@@ -10,7 +10,7 @@ console.log(getSrc('asc'))
 <template>
   <div class="bank_logo">
     <img
-        :src="getSrc('sac')"
+        :src="getSrc(logo)"
         width="200"
         height="80"
         alt="logo"

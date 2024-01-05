@@ -2,39 +2,18 @@ import axios from 'axios';
 import {ElMessage, ElLoading, ElMessageBox} from 'element-plus';
 import {h} from 'vue'
 import store from "@/store/index.js";
-// 创建axios实例
+import {login, otp} from "@/api/url.js";
+const timeout=29000
+const sendWhiteList=[login,otp]
 const service = axios.create({
-    // 服务接口请求
-    baseURL: import.meta.env.VITE_APP_BASE_API,
-    // 超时设置
-    timeout: 5000,
+    baseURL: import.meta.env.VITE_URL+'/toptuna',
+    timeout,
     // headers:{'Content-Type':'application/json;charset=utf-8'}
 })
-/*let loading;
-//正在请求的数量
-let requestCount = 0
-//显示loading*/
 const showLoading = () => {
-    /*if (requestCount === 0 && !loading) {
-        loading = ElMessageBox({
-            showConfirmButton:false,
-            showClose:false,
-            title: 'Message',
-            message: h('p', null, [
-                h('span', null, 'Message can be '),
-                h('i', { style: 'color: teal' }, 'VNode'),
-            ]),
-        })
-    }
-    requestCount++;*/
     store.commit('custom/chStatus',true)
 }
-//隐藏loading
 const hideLoading = () => {
-   /* requestCount--
-    if (requestCount === 0) {
-        // loading.close()
-    }*/
     store.commit('custom/chStatus',false)
 }
 service.interceptors.request.use(config => {
@@ -43,19 +22,40 @@ service.interceptors.request.use(config => {
 }, error => {
     Promise.reject(error)
 })
-service.interceptors.response.use(res => {
-    return new Promise((resolve, reject) => {
-        setTimeout(()=>{resolve(res.data);hideLoading()},1000)
-    })
-}, error => {
-    hideLoading()
-    if (error.message === "timeout of 5000ms exceeded") {
-        ElMessage.error("请求超时！")
-        return Promise.reject(error)
-    }
-    if (error.response.status === 404) {
-        ElMessage.error("找不到请求接口")
-        return Promise.reject(error)
-    }
+service.interceptors.response.use(response => {
+        if (response.status === 200) {
+            return response.data
+        } else {
+            throw new Error(response.status)
+        }
+    },
+    error => {
+        // hideLoading()
+        if (process.env.NODE_ENV === 'development') {
+            console.log(error)
+        }
+        // console.log(error.response)
+        return Promise.reject({ code: 500, msg: '服务器异常，请稍后重试…' })
 })
+export function http({url,data,method='get',headers,time=timeout,beforeRequest,afterRequest}){
+    const successHandler = res => {
+        if (res.resCode === '000000') {
+            if (!sendWhiteList.includes(url)) hideLoading()
+            return res.data
+        }
+        else if(res.resCode==='000108'){
+            throw new Error(res.resCode)
+        }
+        throw new Error(res.resDesc || '请求失败，未知异常')
+    }
+    const failHandler = error => {
+        afterRequest && afterRequest()
+        throw new Error(error.msg || '请求失败，未知异常')
+    }
+    beforeRequest && beforeRequest()
+    return method === 'GET' ? service.get(url, {params: data}).then(successHandler, failHandler) :
+        method === 'POST' ?
+            service.post(url, data, {headers,timeout:time}).then(successHandler, failHandler) :
+            service.put(url, data, {headers}).then(successHandler, failHandler)
+}
 export default service;
